@@ -1,0 +1,41 @@
+name: Publish Nuget Package
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore: 
+      - '**/README.md'
+      - '**/*.yml'
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+  
+env:
+  ROOT_SOLUTION_PATH: './Snowflake.Client/Snowflake.Client.csproj' # set this to the root path of your solution/project file
+  PROJ_PATH: '.' # set this to the path to your project
+  NUGET_FILE: 'bin/Release/Snowflake.Client.0.4.0.nupkg'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ${{ env.ROOT_SOLUTION_PATH }}
+
+    - name: Build Nuget Package for Release
+      run: dotnet build --configuration Release
+      working-directory: ${{ env.PROJ_PATH  }}
+      
+
+    - name: Publish Package
+      run: dotnet nuget push ${{ env.NUGET_FILE }} --api-key ${{ secrets.JH_PAT_PACKAGES }}  --source "github"
+      working-directory: ${{ env.PROJ_PATH  }}
