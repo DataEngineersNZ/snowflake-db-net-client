@@ -27,6 +27,9 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
+    - name: Add NuGet Source
+      run:  dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/DataEngineersNZ/index.json"
+
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ${{ env.ROOT_SOLUTION_PATH }}
