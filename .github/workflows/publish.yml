@@ -13,7 +13,7 @@ on:
 env:
   ROOT_SOLUTION_PATH: './Snowflake.Client' # set this to the root path of your solution/project file
   PROJ_PATH: '.' # set this to the path to your project
-  NUGET_FILE: 'bin/Release/Snowflake.Client.0.4.0.nupkg'
+  NUGET_FILE: './Snowflake.Client/bin/Release/Snowflake.Client.0.4.0.nupkg'
 
 jobs:
   build:
@@ -37,7 +37,10 @@ jobs:
     - name: Build Nuget Package for Release
       run: dotnet build --configuration Release
       working-directory: ${{ env.PROJ_PATH  }}
-      
+
+    - name: List project files before build.settings.json rename
+      run: tree
+      working-directory: ${{ env.PROJ_PATH }}
 
     - name: Publish Package
       run: dotnet nuget push ${{ env.NUGET_FILE }} --api-key ${{ secrets.JH_PAT_PACKAGES }}  --source "github"
