@@ -1,13 +1,14 @@
-﻿using NUnit.Framework;
+﻿
 using Snowflake.Client.Tests.IntegrationTests.Models;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Snowflake.Client.Tests.IntegrationTests
 {
-    [TestFixture]
+
     public class SnowflakeQueriesWithMappingTest
     {
         private readonly SnowflakeClient _snowflakeClient;
@@ -21,7 +22,7 @@ namespace Snowflake.Client.Tests.IntegrationTests
             _snowflakeClient = new SnowflakeClient(conectionInfo.User, conectionInfo.Password, conectionInfo.Account, conectionInfo.Region);
         }
 
-        [Test]
+        [Fact]
         public async Task QueryAndMap_SimpleTypes_Record_1()
         {
             await CreateAndPopulateTableWithSimpleDataTypes();
@@ -30,12 +31,12 @@ namespace Snowflake.Client.Tests.IntegrationTests
 
             var records = result.ToList();
 
-            Assert.AreEqual(1, records[0].Id);
-            Assert.AreEqual(1, records[0].SomeInt);
-            Assert.AreEqual(2.5F, records[0].SomeFloat);
-            Assert.AreEqual("some-text", records[0].SomeVarchar);
-            Assert.AreEqual(true, records[0].SomeBoolean);
-            Assert.AreEqual(new byte[] { 119, 111, 119 }, records[0].SomeBinary);
+            Assert.Equal(1, records[0].Id);
+            Assert.Equal(1, records[0].SomeInt);
+            Assert.Equal(2.5F, records[0].SomeFloat);
+            Assert.Equal("some-text", records[0].SomeVarchar);
+            Assert.Equal(true, records[0].SomeBoolean);
+            Assert.Equal(new byte[] { 119, 111, 119 }, records[0].SomeBinary);
         }
 
 

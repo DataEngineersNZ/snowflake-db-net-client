@@ -1,12 +1,12 @@
 [![NuGet](https://img.shields.io/badge/nuget-v0.3.6-green.svg)](https://www.nuget.org/packages/Snowflake.Client/) 
 [![](https://img.shields.io/nuget/dt/Snowflake.Client.svg)](https://www.nuget.org/packages/Snowflake.Client/) 
-[![Targets](https://img.shields.io/badge/.NET%20Standard-2.0-green.svg)](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) 
+[![Targets](https://img.shields.io/badge/.NET%20-5-green.svg)](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Snowflake.Client
 .NET client for [Snowflake](https://www.snowflake.com) REST API.  
 Provides API to execute SQL queries and map response to your models.  
-Read my [blog post](https://medium.com/@fixer_m/better-net-client-for-snowflake-db-ecb48c48c872) about the ideas behind it. 
+Read the [blog post](https://medium.com/@fixer_m/better-net-client-for-snowflake-db-ecb48c48c872) about the ideas behind it. 
 
 ### Main Features
 - User/Password authentication

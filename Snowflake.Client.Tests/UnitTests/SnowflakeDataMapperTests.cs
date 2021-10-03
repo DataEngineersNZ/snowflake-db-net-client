@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using Snowflake.Client.Json;
 using System;
 using System.Collections.Generic;
@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace Snowflake.Client.Tests.UnitTests
 {
-    [TestFixture]
+
     public class SnowflakeDataMapperTests
     {
-        [Test]
+        [Fact]
         public void SnowflakeDataMapper_MapTo_CustomClass()
         {
             var responseSample = GetFakeResponse();
@@ -18,23 +18,23 @@ namespace Snowflake.Client.Tests.UnitTests
             var mappedObjects = SnowflakeDataMapper.MapTo<CustomClass>(responseSample.RowType, responseSample.RowSet);
             var firstObject = mappedObjects.FirstOrDefault();
 
-            Assert.IsNotNull(firstObject);
-            Assert.AreEqual("Sometext", firstObject.StringProperty);
-            Assert.AreEqual(true, firstObject.BoolProperty);
-            Assert.AreEqual(7, firstObject.IntProperty);
-            Assert.AreEqual(27.6F, firstObject.FloatProperty);
-            Assert.AreEqual(19.239834M, firstObject.DecimalProperty);
-            Assert.AreEqual(Guid.Parse("e7412bbf-88ee-4149-b341-101e0f72ec7c"), firstObject.GuidProperty);
-            Assert.AreEqual(new byte[] { 0, 128, 255 }, firstObject.ByteArrayProperty);
+            Assert.NotNull(firstObject);
+            Assert.Equal("Sometext", firstObject.StringProperty);
+            Assert.Equal(true, firstObject.BoolProperty);
+            Assert.Equal(7, firstObject.IntProperty);
+            Assert.Equal(27.6F, firstObject.FloatProperty);
+            Assert.Equal(19.239834M, firstObject.DecimalProperty);
+            Assert.Equal(Guid.Parse("e7412bbf-88ee-4149-b341-101e0f72ec7c"), firstObject.GuidProperty);
+            Assert.Equal(new byte[] { 0, 128, 255 }, firstObject.ByteArrayProperty);
 
             var dateTime = DateTime.ParseExact("2020-09-13 12:26:40.0000000", "yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture);
-            Assert.AreEqual(dateTime, firstObject.DateTimeProperty);
+            Assert.Equal(dateTime, firstObject.DateTimeProperty);
 
             var dateTimeOffset = DateTimeOffset.ParseExact("2020-09-13 12:26:40.0000000", "yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-            Assert.AreEqual(dateTimeOffset, firstObject.DateTimeOffsetProperty);
+            Assert.Equal(dateTimeOffset, firstObject.DateTimeOffsetProperty);
         }
 
-        [Test]
+        [Fact]
         public void SnowflakeDataMapper_MapTo_CustomClassWithNullableProps()
         {
             var responseSample = GetFakeResponse();
@@ -42,18 +42,18 @@ namespace Snowflake.Client.Tests.UnitTests
             var mappedObjects = SnowflakeDataMapper.MapTo<CustomClassNullables>(responseSample.RowType, responseSample.RowSet);
             var firstObject = mappedObjects.FirstOrDefault();
 
-            Assert.IsNotNull(firstObject);
-            Assert.AreEqual(true, firstObject.BoolProperty);
-            Assert.AreEqual(7, firstObject.IntProperty);
-            Assert.AreEqual(27.6F, firstObject.FloatProperty);
-            Assert.AreEqual(19.239834M, firstObject.DecimalProperty);
-            Assert.AreEqual(Guid.Parse("e7412bbf-88ee-4149-b341-101e0f72ec7c"), firstObject.GuidProperty);
+            Assert.NotNull(firstObject);
+            Assert.Equal(true, firstObject.BoolProperty);
+            Assert.Equal(7, firstObject.IntProperty);
+            Assert.Equal(27.6F, firstObject.FloatProperty);
+            Assert.Equal(19.239834M, firstObject.DecimalProperty);
+            Assert.Equal(Guid.Parse("e7412bbf-88ee-4149-b341-101e0f72ec7c"), firstObject.GuidProperty);
 
             var dateTime = DateTime.ParseExact("2020-09-13 12:26:40.0000000", "yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture);
-            Assert.AreEqual(dateTime, firstObject.DateTimeProperty);
+            Assert.Equal(dateTime, firstObject.DateTimeProperty);
 
             var dateTimeOffset = DateTimeOffset.ParseExact("2020-09-13 12:26:40.0000000", "yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-            Assert.AreEqual(dateTimeOffset, firstObject.DateTimeOffsetProperty);
+            Assert.Equal(dateTimeOffset, firstObject.DateTimeOffsetProperty);
         }
 
         private QueryExecResponseData GetFakeResponse()

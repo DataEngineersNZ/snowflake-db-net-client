@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Snowflake.Client.Tests.UnitTests
 {
-    [TestFixture]
+
     public class ParameterBindingsMultipleValuesTest
     {
         private static IEnumerable<string> GetStringValues()
@@ -15,47 +15,47 @@ namespace Snowflake.Client.Tests.UnitTests
             yield return "three";
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_List()
         {
             var values = GetStringValues().ToList();
 
             var bindings = ParameterBinder.BuildParameterBindings(values);
 
-            Assert.AreEqual(values.Count, bindings.Count);
+            Assert.Equal(values.Count, bindings.Count);
 
             int i = 1;
             foreach (var binding in bindings)
             {
-                Assert.IsTrue(binding.Key == i.ToString());
-                Assert.IsTrue(binding.Value.Type == "TEXT");
-                Assert.IsTrue(binding.Value.Value == values[i - 1]);
+                Assert.True(binding.Key == i.ToString());
+                Assert.True(binding.Value.Type == "TEXT");
+                Assert.True(binding.Value.Value == values[i - 1]);
 
                 i++;
             }
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_Array()
         {
             var values = GetStringValues().ToArray();
 
             var bindings = ParameterBinder.BuildParameterBindings(values);
 
-            Assert.AreEqual(values.Length, bindings.Count);
+            Assert.Equal(values.Length, bindings.Count);
 
             int i = 1;
             foreach (var binding in bindings)
             {
-                Assert.IsTrue(binding.Key == i.ToString());
-                Assert.IsTrue(binding.Value.Type == "TEXT");
-                Assert.IsTrue(binding.Value.Value == values[i - 1]);
+                Assert.True(binding.Key == i.ToString());
+                Assert.True(binding.Value.Type == "TEXT");
+                Assert.True(binding.Value.Value == values[i - 1]);
 
                 i++;
             }
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_Enumerable()
         {
             var values = GetStringValues();
@@ -63,20 +63,20 @@ namespace Snowflake.Client.Tests.UnitTests
 
             var bindings = ParameterBinder.BuildParameterBindings(values);
 
-            Assert.AreEqual(values.Count(), bindings.Count);
+            Assert.Equal(values.Count(), bindings.Count);
 
             int i = 1;
             foreach (var binding in bindings)
             {
-                Assert.IsTrue(binding.Key == i.ToString());
-                Assert.IsTrue(binding.Value.Type == "TEXT");
-                Assert.IsTrue(binding.Value.Value == valuesList[i - 1]);
+                Assert.True(binding.Key == i.ToString());
+                Assert.True(binding.Value.Type == "TEXT");
+                Assert.True(binding.Value.Value == valuesList[i - 1]);
 
                 i++;
             }
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_Dictionary_Ints()
         {
             var values = new Dictionary<string, object>
@@ -87,20 +87,20 @@ namespace Snowflake.Client.Tests.UnitTests
 
             var bindings = ParameterBinder.BuildParameterBindings(values);
 
-            Assert.AreEqual(values.Count(), bindings.Count);
+            Assert.Equal(values.Count(), bindings.Count);
 
             int i = 0;
             foreach (var binding in bindings)
             {
-                Assert.IsTrue(binding.Key == values.Keys.ElementAt(i));
-                Assert.IsTrue(binding.Value.Type == "FIXED");
-                Assert.IsTrue(binding.Value.Value == values.Values.ElementAt(i).ToString());
+                Assert.True(binding.Key == values.Keys.ElementAt(i));
+                Assert.True(binding.Value.Type == "FIXED");
+                Assert.True(binding.Value.Value == values.Values.ElementAt(i).ToString());
 
                 i++;
             }
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_Dictionary_DifferentTypes()
         {
             var values = new Dictionary<string, object>
@@ -116,16 +116,16 @@ namespace Snowflake.Client.Tests.UnitTests
 
             var bindings = ParameterBinder.BuildParameterBindings(values);
 
-            Assert.AreEqual(values.Count(), bindings.Count);
+            Assert.Equal(values.Count(), bindings.Count);
 
 
             for (int i = 0; i < bindings.Count; i++)
             {
-                Assert.IsTrue(bindings.Keys.ElementAt(i) == values.Keys.ElementAt(i));
+                Assert.True(bindings.Keys.ElementAt(i) == values.Keys.ElementAt(i));
             }
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_Dictionary_ComplexType()
         {
             var values = new Dictionary<string, object>
@@ -136,7 +136,7 @@ namespace Snowflake.Client.Tests.UnitTests
             Assert.Throws<ArgumentException>(() => ParameterBinder.BuildParameterBindings(values));
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_Dictionary_CustomClass()
         {
             var values = new Dictionary<string, CustomClass>
@@ -147,7 +147,7 @@ namespace Snowflake.Client.Tests.UnitTests
             Assert.Throws<ArgumentException>(() => ParameterBinder.BuildParameterBindings(values));
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_ListOfComplexTypes()
         {
             var values = GetCustomClassCollection().ToList();
@@ -155,7 +155,7 @@ namespace Snowflake.Client.Tests.UnitTests
             Assert.Throws<ArgumentException>(() => ParameterBinder.BuildParameterBindings(values));
         }
 
-        [Test]
+        [Fact]
         public void BuildParameters_IEnumerableOfComplexTypes()
         {
             var values = GetCustomClassCollection();

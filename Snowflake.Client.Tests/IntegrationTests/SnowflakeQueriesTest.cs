@@ -1,12 +1,13 @@
-﻿using NUnit.Framework;
+﻿
 using Snowflake.Client.Tests.IntegrationTests.Models;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Snowflake.Client.Tests.IntegrationTests
 {
-    [TestFixture]
+
     public class SnowflakeQueriesTest
     {
         private readonly SnowflakeClient _snowflakeClient;
@@ -20,38 +21,38 @@ namespace Snowflake.Client.Tests.IntegrationTests
             _snowflakeClient = new SnowflakeClient(conectionInfo.User, conectionInfo.Password, conectionInfo.Account, conectionInfo.Region);
         }
 
-        [Test]
+        [Fact]
         public async Task ExecuteScalar_WithResult()
         {
             string result = await _snowflakeClient.ExecuteScalarAsync("SELECT CURRENT_USER();");
 
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result));
+            Assert.True(!string.IsNullOrWhiteSpace(result));
         }
 
-        [Test]
+        [Fact]
         public async Task ExecuteScalar_Null()
         {
             string result = await _snowflakeClient.ExecuteScalarAsync("SELECT 1 WHERE 2 > 3;");
 
-            Assert.IsNull(result);
+            Assert.Null(result);
         }
 
-        [Test]
+        [Fact]
         public async Task Execute()
         {
             // todo: do temporary insert to get affected rows > 0
 
             long result = await _snowflakeClient.ExecuteAsync("SELECT 1;");
 
-            Assert.IsTrue(result == -1);
+            Assert.True(result == -1);
         }
 
-        [Test]
+        [Fact]
         public async Task QueryRawResponse()
         {
             var result = await _snowflakeClient.QueryRawResponseAsync("SELECT CURRENT_USER();");
 
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
     }
 }

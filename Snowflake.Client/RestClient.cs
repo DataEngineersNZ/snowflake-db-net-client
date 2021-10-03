@@ -46,18 +46,7 @@ namespace Snowflake.Client
             return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions);
         }
 
-        [Obsolete]
-        public T Send<T>(HttpRequestMessage request)
-        {
-            SetServicePointOptions(request.RequestUri);
 
-            var response = _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).Result;
-            response.EnsureSuccessStatusCode();
-
-            var json = response.Content.ReadAsStringAsync().Result;
-
-            return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions);
-        }
 
         private void SetServicePointOptions(Uri requestUri)
         {
