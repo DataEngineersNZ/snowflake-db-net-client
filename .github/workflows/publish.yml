@@ -13,7 +13,7 @@ on:
 env:
   ROOT_SOLUTION_PATH: './Snowflake.Client' # set this to the root path of your solution/project file
   PROJ_PATH: '.' # set this to the path to your project
-  NUGET_FILE: './Snowflake.Client/bin/Release/Snowflake.Client.0.4.0.nupkg'
+  NUGET_FILE: './Snowflake.Client/bin/Release/Snowflake.Client.0.4.1.nupkg'
 
 jobs:
   build:
