@@ -1,5 +1,6 @@
 ﻿
 using Snowflake.Client.Tests.IntegrationTests.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -23,32 +24,47 @@ namespace Snowflake.Client.Tests.IntegrationTests
         }
 
         [Fact]
-        public async Task QueryAndMap_SimpleTypes_Record_1()
+        public async Task QueryAndMap_SimpleTypes()
         {
             await CreateAndPopulateTableWithSimpleDataTypes();
 
             var result = await _snowflakeClient.QueryAsync<SimpleDataTypes>("SELECT * FROM DEMO_DB.PUBLIC.DATATYPES_SIMPLE;");
-
             var records = result.ToList();
 
-            Assert.Equal(1, records[0].Id);
-            Assert.Equal(1, records[0].SomeInt);
-            Assert.Equal(2.5F, records[0].SomeFloat);
-            Assert.Equal("some-text", records[0].SomeVarchar);
-            Assert.Equal(true, records[0].SomeBoolean);
-            Assert.Equal(new byte[] { 119, 111, 119 }, records[0].SomeBinary);
+            ValidateSimpleRecords(records);
+
+            await RemoveSimpleDatatypesTable();
         }
 
-
-
-        private async Task<string> CreateSimpleDatatypesTableIfNotExist()
+        private void ValidateSimpleRecords(List<SimpleDataTypes> records)
         {
-            var query = "CREATE TABLE DEMO_DB.PUBLIC.DATATYPES_SIMPLE IF NOT EXIST " +
-                        "(ID INT, SomeInt INT, SomeFloat FLOAT, SomeVarchar VARCHAR, SomeBoolean BOOLEAN, SomeBinary BINARY);";
+             Assert.Equal(1, records[0].Id);
+             Assert.Equal(1, records[0].SomeInt);
+             Assert.Equal(2.5F, records[0].SomeFloat);
+             Assert.Equal("some-text", records[0].SomeVarchar);
+             Assert.Equal(true, records[0].SomeBoolean);
+             Assert.Equal(new byte[] { 119, 111, 119 }, records[0].SomeBinary);
 
-            var result = await _snowflakeClient.ExecuteScalarAsync(query);
+             Assert.Equal(2, records[1].Id);
+             Assert.Equal(0, records[1].SomeInt);
+             Assert.Equal(777.0F, records[1].SomeFloat);
+             Assert.Equal("", records[1].SomeVarchar);
+             Assert.Equal(false, records[1].SomeBoolean);
+             Assert.Null(records[1].SomeBinary);
 
-            return result;
+             Assert.Equal(3, records[2].Id);
+             Assert.Equal(-1, records[2].SomeInt);
+             Assert.Equal(-2.5F, records[2].SomeFloat);
+             Assert.Equal("some-text\r\n with rn", records[2].SomeVarchar);
+             Assert.Null(records[2].SomeBoolean);
+             Assert.Equal(new byte[] { 55, 55, 54, 70, 55, 55 }, records[2].SomeBinary);
+
+             Assert.Equal(4, records[3].Id);
+             Assert.Null(records[3].SomeInt);
+             Assert.Null(records[3].SomeFloat);
+             Assert.Null(records[3].SomeVarchar);
+             Assert.Null(records[3].SomeBoolean);
+             Assert.Null(records[3].SomeBinary);
         }
 
         private async Task CreateAndPopulateTableWithSimpleDataTypes()
@@ -76,10 +92,13 @@ namespace Snowflake.Client.Tests.IntegrationTests
             var insertion4 = await _snowflakeClient.ExecuteAsync(insertQuery4);
         }
 
+        private async Task<string> RemoveSimpleDatatypesTable()
+        {
+            var query = "DROP TABLE IF EXISTS DEMO_DB.PUBLIC.DATATYPES_SIMPLE;";
+            var result = await _snowflakeClient.ExecuteScalarAsync(query);
 
-
-
-       
+            return result;
+        }
     }
 
     public class SimpleDataTypes

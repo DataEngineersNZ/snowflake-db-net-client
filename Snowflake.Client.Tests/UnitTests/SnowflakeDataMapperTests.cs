@@ -20,7 +20,7 @@ namespace Snowflake.Client.Tests.UnitTests
 
             Assert.NotNull(firstObject);
             Assert.Equal("Sometext", firstObject.StringProperty);
-            Assert.Equal(true, firstObject.BoolProperty);
+            Assert.True(firstObject.BoolProperty);
             Assert.Equal(7, firstObject.IntProperty);
             Assert.Equal(27.6F, firstObject.FloatProperty);
             Assert.Equal(19.239834M, firstObject.DecimalProperty);
